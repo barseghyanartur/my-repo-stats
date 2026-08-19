@@ -37,9 +37,13 @@ jobs:
           GITHUB_USERNAME: ${{ github.actor }}
         run: make update
 
+      - name: Prepare deployment directory
+        run: |
+          mkdir -p _site
+          cp index.html stars.html pypi_downloads_data.json github_stars_data.json pypi_packages.json github_repos.json _site/
+
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
-          exclude_files: '.github/** .agents/** src/** tests/** .env .env.example .gitignore AGENTS.md Makefile pyproject.toml uv.lock README.rst LICENSE plan.md .tokensave/**'
+          publish_dir: _site
