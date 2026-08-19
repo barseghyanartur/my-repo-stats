@@ -68,7 +68,7 @@ Set these in ``.env`` (for local use). For CI, ``GITHUB_USERNAME`` is auto-detec
 Deploying to GitHub Pages
 =========================
 
-1. Go to **Settings → Pages → Source** and select **GitHub Actions**
+1. Go to **Settings → Pages → Source** and select **Deploy from a branch**, then pick ``gh-pages``
 2. Add ``PEPY_API_KEY`` in **Settings → Secrets and variables → Actions**
 3. Push to ``main`` or wait for the daily run (18:00 UTC)
 
