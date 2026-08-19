@@ -32,7 +32,7 @@ Review every PR against this checklist. Report findings explicitly.
 ### 4. Configuration & Data
 - [ ] `pypi_packages.json` / `github_repos.json` remain flat JSON arrays?
 - [ ] No nested structures introduced?
-- [ ] `PEPY_API_KEY` / `GITHUB_TOKEN` / `GITHUB_USERNAME` only via env/secrets?
+- [ ] `PEPY_API_KEY` / `GITHUB_USERNAME` only via env/secrets?
 - [ ] `GITHUB_USERNAME` configured via env var (not hardcoded)?
 
 ### 5. Documentation

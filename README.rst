@@ -59,17 +59,17 @@ Run ``make update`` after any change.
 Environment variables
 =====================
 
-Set these in ``.env`` (for local use) or in GitHub Actions secrets (for CI):
+Set these in ``.env`` (for local use). For CI, ``GITHUB_USERNAME`` is auto-detected and ``GITHUB_TOKEN`` is optional.
 
 * ``PEPY_API_KEY`` — get it from https://pepy.tech (Account → API, Pro plan required)
-* ``GITHUB_TOKEN`` — get it from https://github.com/settings/tokens (``repo`` scope; optional, only needed for star tracking)
 * ``GITHUB_USERNAME`` — your GitHub username (required for star tracking)
+* ``GITHUB_TOKEN`` — optional, get it from https://github.com/settings/tokens (increases rate limit from 60 to 5000 requests/hour)
 
 Deploying to GitHub Pages
 =========================
 
 1. Go to **Settings → Pages → Source** and select **GitHub Actions**
-2. Add the secrets listed above in **Settings → Secrets and variables → Actions**
+2. Add ``PEPY_API_KEY`` in **Settings → Secrets and variables → Actions**
 3. Push to ``main`` or wait for the daily run (18:00 UTC)
 
 Your dashboard will be at ``https://<username>.github.io/<repo-name>``

@@ -59,13 +59,13 @@ make test
 Create `.env` file in repo root (gitignored):
 ```bash
 PEPY_API_KEY=pepy_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 GITHUB_USERNAME=your_github_username
+GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
 - `PEPY_API_KEY`: Required for `make update` (fetching download data). Get from https://pepy.tech (Pro plan).
-- `GITHUB_TOKEN`: Required for `make update_stars` (fetching stars). Classic PAT with `public_repo` scope.
 - `GITHUB_USERNAME`: Required for `make update_stars` (fetching stars). Your GitHub username.
+- `GITHUB_TOKEN`: Optional. Increases GitHub API rate limit from 60 to 5000 requests/hour.
 
 ---
 

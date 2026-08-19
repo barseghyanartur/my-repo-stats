@@ -39,8 +39,7 @@ jobs:
       - name: Fetch latest data
         env:
           PEPY_API_KEY: ${{ secrets.PEPY_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
+          GITHUB_USERNAME: ${{ github.actor }}
         run: make update
 
       - name: Upload Pages artifact
