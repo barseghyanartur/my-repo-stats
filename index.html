@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>PyPI Downloads Dashboard</title>
+     <script src="https://cdn.tailwindcss.com"></script>
+     <style>
+       table { border-collapse: collapse; }
+       th, td { border: 1px solid #e5e7eb; padding: 8px 12px; }
+       td.highlight-row, th.highlight-row { background-color: #dbeafe; }
+       td.highlight-col, th.highlight-col { background-color: #dbeafe; }
+       td.highlight-row.highlight-col, th.highlight-row.highlight-col { background-color: #bfdbfe; }
+     </style>
+</head>
+<body class="bg-gray-50 font-sans">
+     <div class="max-w-7xl mx-auto p-8">
+<div class="flex items-center justify-between mb-2">
+            <h1 class="text-4xl font-bold mb-2">PyPI Downloads Dashboard</h1>
+            <a href="stars.html" class="text-blue-600 hover:underline text-sm">GitHub Stars →</a>
+        </div>
+        <p class="text-gray-500 mb-8" id="last-updated"></p>
+
+       <div id="dashboard" class="space-y-12"></div>
+     </div>
+
+     <script>
+      fetch('pypi_downloads_data.json')
+           .then(r => r.json())
+           .then(data => {
+              document.getElementById('last-updated').textContent =
+                   `Last updated: ${new Date(data.last_updated).toLocaleString()}`;
+
+              const container = document.getElementById('dashboard');
+
+               // Get all unique dates sorted chronologically (oldest first)
+             let sortedDates = [];
+            for (let pkg in data.packages) {
+                sortedDates = sortedDates.concat(Object.keys(data.packages[pkg]));
+             }
+             sortedDates = [...new Set(sortedDates)].sort((a, b) => a.localeCompare(b));
+
+              // Get all package names sorted alphabetically
+             let packageNames = Object.keys(data.packages).sort();
+
+             // Create table header: first column is Date, rest are packages
+            let theadHTML = '<thead class="bg-gray-100 sticky top-0 z-10"><tr>';
+            theadHTML += `<th class="text-left p-2 font-semibold min-w-[80px]">Date</th>`;
+             packageNames.forEach(pkg => {
+                 theadHTML += `<th class="p-2 text-right font-semibold">${pkg}</th>`;
+              });
+            theadHTML += '</tr></thead>';
+
+              // Create table body: each date is a row, values are download counts per package
+            let tbodyHTML = '<tbody class="text-sm">';
+             sortedDates.forEach(date => {
+                let rowHTML = `<tr><td class="p-2 font-mono text-gray-700">${date}</td>`;
+                packageNames.forEach(pkg => {
+                    const history = data.packages[pkg];
+                    const downloads = (history && date in history) ? history[date] : '-';
+                    rowHTML += `<td class="p-2 text-right font-medium ${downloads === '-' ? 'text-gray-400' : ''}">${downloads.toLocaleString()}</td>`;
+                });
+                rowHTML += '</tr>';
+                tbodyHTML += rowHTML;
+             });
+            tbodyHTML += '</tbody>';
+
+             const html = '<table class="w-full bg-white shadow-sm rounded-xl">' + theadHTML + tbodyHTML + '</table>';
+             container.innerHTML = html;
+
+             // Row + column highlight on hover
+             const table = container.querySelector('table');
+             const allCells = Array.from(table.querySelectorAll('td, th'));
+
+             allCells.forEach(cell => {
+               cell.addEventListener('mouseenter', () => {
+                 const row = cell.closest('tr');
+                 const colIndex = cell.cellIndex;
+                 // Highlight row
+                 row.querySelectorAll('td, th').forEach(c => c.classList.add('highlight-row'));
+                 // Highlight column
+                 table.querySelectorAll(`td:nth-child(${colIndex + 1}), th:nth-child(${colIndex + 1})`)
+                   .forEach(c => c.classList.add('highlight-col'));
+               });
+               cell.addEventListener('mouseleave', () => {
+                 allCells.forEach(c => c.classList.remove('highlight-row', 'highlight-col'));
+               });
+             });
+           });
+     </script>
+</body>
+</html>
