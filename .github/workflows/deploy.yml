@@ -31,11 +31,27 @@ jobs:
       - name: Install dependencies
         run: uv sync
 
+      - name: Fetch existing data
+        run: |
+          git fetch origin data || true
+          git show origin/data:pypi_downloads_data.json > pypi_downloads_data.json 2>/dev/null || echo "{}" > pypi_downloads_data.json
+          git show origin/data:github_stars_data.json > github_stars_data.json 2>/dev/null || echo "{}" > github_stars_data.json
+
       - name: Fetch latest data
         env:
           PEPY_API_KEY: ${{ secrets.PEPY_API_KEY }}
           GITHUB_USERNAME: ${{ github.actor }}
         run: make update
+
+      - name: Push data to data branch
+        run: |
+          git clone --branch data --single-branch https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git data-repo || \
+          (git clone --single-branch https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git data-repo && cd data-repo && git checkout -b data)
+          cp pypi_downloads_data.json github_stars_data.json data-repo/
+          cd data-repo
+          git add pypi_downloads_data.json github_stars_data.json
+          git diff --cached --quiet || git commit -m "Update data $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git push origin data
 
       - name: Prepare deployment directory
         run: |
