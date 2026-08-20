@@ -86,6 +86,8 @@ def main():
             data = json.load(f)
     else:
         data = {"last_updated": None, "packages": {}}
+    data.setdefault("packages", {})
+    data.setdefault("last_updated", None)
 
     with httpx.Client(timeout=30) as client:
         for i, pkg in enumerate(packages):

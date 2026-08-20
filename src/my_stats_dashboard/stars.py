@@ -77,6 +77,8 @@ def main():
             data = json.load(f)
     else:
         data = {"last_updated": None, "repos": {}}
+    data.setdefault("repos", {})
+    data.setdefault("last_updated", None)
 
     today = datetime.datetime.utcnow().date().isoformat()
 

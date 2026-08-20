@@ -34,8 +34,8 @@ jobs:
       - name: Fetch existing data
         run: |
           git fetch origin data || true
-          git show origin/data:pypi_downloads_data.json > pypi_downloads_data.json 2>/dev/null || echo "{}" > pypi_downloads_data.json
-          git show origin/data:github_stars_data.json > github_stars_data.json 2>/dev/null || echo "{}" > github_stars_data.json
+          git show origin/data:pypi_downloads_data.json > pypi_downloads_data.json 2>/dev/null || echo '{"last_updated": null, "packages": {}}' > pypi_downloads_data.json
+          git show origin/data:github_stars_data.json > github_stars_data.json 2>/dev/null || echo '{"last_updated": null, "repos": {}}' > github_stars_data.json
 
       - name: Fetch latest data
         env:
