@@ -49,6 +49,8 @@ jobs:
           (git clone --single-branch https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git data-repo && cd data-repo && git checkout -b data)
           cp pypi_downloads_data.json github_stars_data.json data-repo/
           cd data-repo
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add -f pypi_downloads_data.json github_stars_data.json
           git diff --cached --quiet || git commit -m "Update data $(date -u +%Y-%m-%dT%H:%M:%SZ)"
           git push origin data
