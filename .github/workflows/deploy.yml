@@ -45,10 +45,16 @@ jobs:
 
       - name: Push data to data branch
         run: |
-          git clone --branch data --single-branch https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git data-repo || \
-          (git clone --single-branch https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git data-repo && cd data-repo && git checkout -b data)
-          cp pypi_downloads_data.json github_stars_data.json data-repo/
-          cd data-repo
+          if git clone --branch data --single-branch https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git data-repo 2>/dev/null; then
+            cp pypi_downloads_data.json github_stars_data.json data-repo/
+            cd data-repo
+          else
+            git clone --single-branch https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git data-repo
+            cd data-repo
+            git checkout --orphan data
+            git rm -rf .
+            cp ../pypi_downloads_data.json ../github_stars_data.json .
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add -f pypi_downloads_data.json github_stars_data.json
