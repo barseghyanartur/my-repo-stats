@@ -38,7 +38,7 @@
             for (let pkg in data.packages) {
                 sortedDates = sortedDates.concat(Object.keys(data.packages[pkg]));
              }
-             sortedDates = [...new Set(sortedDates)].sort((a, b) => a.localeCompare(b));
+              sortedDates = [...new Set(sortedDates)].sort((a, b) => b.localeCompare(a));
 
               // Get all package names sorted alphabetically
              let packageNames = Object.keys(data.packages).sort();

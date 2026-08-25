@@ -38,7 +38,7 @@
                 for (let repo in data.repos) {
                     sortedDates = sortedDates.concat(Object.keys(data.repos[repo]));
                 }
-                sortedDates = [...new Set(sortedDates)].sort((a, b) => a.localeCompare(b));
+                sortedDates = [...new Set(sortedDates)].sort((a, b) => b.localeCompare(a));
 
                 // Get all repo names sorted alphabetically
                 let repoNames = Object.keys(data.repos).sort();
